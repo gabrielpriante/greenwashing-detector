@@ -1,5 +1,5 @@
 from typing import Dict, List
-from .text_cleaning import basic_clean_text
+from text_cleaning import basic_clean_text
 
 GREENWASHING_KEYWORDS: Dict[str, int] = {
     "eco friendly": 2,
