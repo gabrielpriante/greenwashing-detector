@@ -1,18 +1,9 @@
 """
-Greenwashing Detector Package
+Greenwashing Detector package.
 
-A simple keyword-based greenwashing detection tool for analyzing text.
+This file is intentionally minimal for now.
+We import functions directly from submodules, e.g.:
+
+from src.text_cleaning import basic_clean_text
+from src.greenwashing_scoring import simple_greenwashing_score
 """
-
-from .text_cleaner import clean_text, tokenize_text, extract_keywords
-from .scoring import calculate_greenwashing_score, analyze_text, get_keyword_list
-
-__version__ = '0.1.0'
-__all__ = [
-    'clean_text',
-    'tokenize_text', 
-    'extract_keywords',
-    'calculate_greenwashing_score',
-    'analyze_text',
-    'get_keyword_list'
-]
