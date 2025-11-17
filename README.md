@@ -129,6 +129,33 @@ The detector looks for two types of problematic terms:
 
 Each keyword has a weight based on how often it's misused in greenwashing. You can view and modify these in `src/scoring.py`.
 
+### Industry-Specific Greenwashing Terms
+
+This project includes a comprehensive database of **264 greenwashing terms** organized by **6 industries**:
+- **Food** (42 terms): vague terms, misleading environmental claims, health washing, organic-related, packaging claims
+- **Beauty/Cosmetics** (45 terms): vague terms, misleading environmental claims, chemical claims, cruelty-free/vegan, organic/natural, packaging claims
+- **Fashion** (44 terms): vague terms, material claims, production claims, certification vague, circular economy, animal welfare
+- **Electronics** (41 terms): vague terms, energy claims, material claims, packaging claims, lifecycle claims
+- **Home Goods** (44 terms): vague terms, cleaning products, material claims, production claims, packaging claims, performance claims
+- **Automotive** (48 terms): vague terms, fuel/emission claims, efficiency claims, material claims, manufacturing claims, lifecycle claims, alternative fuels
+
+To use industry-specific terms:
+```python
+from src.industry_terms import print_industry_terms, get_terms_for_industry
+
+# View all terms for an industry
+print_industry_terms('Food')
+
+# Get terms programmatically
+food_terms = get_terms_for_industry('Food')
+```
+
+For a complete guide, see [INDUSTRY_TERMS.md](INDUSTRY_TERMS.md) or run:
+```bash
+python src/industry_terms.py
+python examples/industry_terms_examples.py
+```
+
 ## Example Output
 
 ```
