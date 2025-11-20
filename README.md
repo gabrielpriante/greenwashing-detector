@@ -2,6 +2,8 @@
 
 A simple, beginner-friendly Python tool for detecting potential greenwashing in marketing and product claims.
 
+> **Disclaimer**: This tool is designed to raise awareness and assist with early screening of environmental language in corporate marketing, advertising, and public communications. It is not intended to make definitive claims about greenwashing or to analyze academic research. The analysis is based on keyword matching and may flag legitimate claims or miss sophisticated greenwashing tactics. For serious evaluation of environmental claims, please consult environmental experts and verify against recognized standards and certifications.
+
 ## What is Greenwashing?
 
 Greenwashing occurs when companies make misleading or unsubstantiated environmental claims about their products or services. This tool uses keyword-based analysis to identify potentially misleading "green" marketing language.
@@ -129,6 +131,33 @@ The detector looks for two types of problematic terms:
 
 Each keyword has a weight based on how often it's misused in greenwashing. You can view and modify these in `src/scoring.py`.
 
+### Industry-Specific Greenwashing Terms
+
+This project includes a comprehensive database of **264 greenwashing terms** organized by **6 industries**:
+- **Food** (42 terms): vague terms, misleading environmental claims, health washing, organic-related, packaging claims
+- **Beauty/Cosmetics** (45 terms): vague terms, misleading environmental claims, chemical claims, cruelty-free/vegan, organic/natural, packaging claims
+- **Fashion** (44 terms): vague terms, material claims, production claims, certification vague, circular economy, animal welfare
+- **Electronics** (41 terms): vague terms, energy claims, material claims, packaging claims, lifecycle claims
+- **Home Goods** (44 terms): vague terms, cleaning products, material claims, production claims, packaging claims, performance claims
+- **Automotive** (48 terms): vague terms, fuel/emission claims, efficiency claims, material claims, manufacturing claims, lifecycle claims, alternative fuels
+
+To use industry-specific terms:
+```python
+from src.industry_terms import print_industry_terms, get_terms_for_industry
+
+# View all terms for an industry
+print_industry_terms('Food')
+
+# Get terms programmatically
+food_terms = get_terms_for_industry('Food')
+```
+
+For a complete guide, see [INDUSTRY_TERMS.md](INDUSTRY_TERMS.md) or run:
+```bash
+python src/industry_terms.py
+python examples/industry_terms_examples.py
+```
+
 ## Example Output
 
 ```
@@ -166,6 +195,23 @@ For production use, you would need:
 - Expert domain knowledge
 - Certification verification
 
+## Intended Use
+
+This tool is most relevant for **exploratory analysis of corporate sustainability language** in:
+
+- **Corporate marketing materials**: Product descriptions, advertisements, packaging claims
+- **Company communications**: Press releases, sustainability reports, websites
+- **Public filings**: Corporate disclosures and environmental statements
+- **Social media**: Brand posts and campaigns with environmental messaging
+
+**Not suitable for**:
+- Academic research requiring rigorous methodology
+- Legal proceedings or formal complaints
+- Making definitive determinations of greenwashing
+- Analyzing peer-reviewed scientific literature
+
+The tool serves as a **starting point for awareness and discussion**, helping to identify language patterns that may warrant further investigation by qualified experts.
+
 ## Next Steps / Improvements
 
 To expand this project, consider:
@@ -180,12 +226,31 @@ To expand this project, consider:
 
 ## Contributing
 
-Contributions are welcome! Some ways to help:
-- Add more greenwashing keywords
-- Improve the scoring algorithm
-- Add example datasets
-- Enhance documentation
-- Report bugs or suggest features
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+Quick ways to help:
+- Suggest greenwashing terms with sources
+- Improve documentation
+- Report bugs or issues
+- Add test coverage
+
+## Testing
+
+The project includes a basic test suite to verify data integrity:
+
+```bash
+# Run all tests
+python -m unittest discover tests -v
+
+# Run specific test file
+python -m unittest tests.test_industry_terms_data -v
+```
+
+Tests verify:
+- JSON structure integrity
+- All industries have required categories
+- Terms are properly formatted
+- API functions work correctly
 
 ## License
 
