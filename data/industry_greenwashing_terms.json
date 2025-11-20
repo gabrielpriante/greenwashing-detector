@@ -1,350 +1,494 @@
 {
   "Food": {
-    "vague_terms": [
-      "all natural",
-      "100% natural",
-      "natural ingredients",
-      "pure",
-      "clean label",
-      "wholesome",
-      "fresh",
-      "farm fresh",
-      "artisanal",
-      "homemade style"
-    ],
-    "misleading_environmental_claims": [
-      "eco-friendly packaging",
-      "sustainable farming",
-      "sustainably sourced",
-      "responsibly grown",
-      "earth-friendly",
-      "planet-friendly",
-      "green",
-      "environmentally conscious",
-      "carbon neutral",
-      "climate friendly"
-    ],
-    "health_washing": [
-      "chemical-free",
-      "toxin-free",
-      "no artificial ingredients",
-      "free from chemicals",
-      "no nasties",
-      "clean eating",
-      "superfood",
-      "detox",
-      "immunity-boosting",
-      "guilt-free"
-    ],
-    "organic_related": [
-      "organic-inspired",
-      "made with organic ingredients",
-      "contains organic",
-      "naturally organic",
-      "organic style",
-      "organic goodness"
-    ],
-    "packaging_claims": [
-      "recyclable",
-      "biodegradable",
-      "compostable",
-      "zero waste",
-      "minimal packaging",
-      "eco packaging"
-    ]
+    "vague_terms": {
+      "terms": [
+        "all natural",
+        "100% natural",
+        "natural ingredients",
+        "pure",
+        "clean label",
+        "wholesome",
+        "fresh",
+        "farm fresh",
+        "artisanal",
+        "homemade style"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "misleading_environmental_claims": {
+      "terms": [
+        "eco-friendly packaging",
+        "sustainable farming",
+        "sustainably sourced",
+        "responsibly grown",
+        "earth-friendly",
+        "planet-friendly",
+        "green",
+        "environmentally conscious",
+        "carbon neutral",
+        "climate friendly"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "health_washing": {
+      "terms": [
+        "chemical-free",
+        "toxin-free",
+        "no artificial ingredients",
+        "free from chemicals",
+        "no nasties",
+        "clean eating",
+        "superfood",
+        "detox",
+        "immunity-boosting",
+        "guilt-free"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "organic_related": {
+      "terms": [
+        "organic-inspired",
+        "made with organic ingredients",
+        "contains organic",
+        "naturally organic",
+        "organic style",
+        "organic goodness"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "packaging_claims": {
+      "terms": [
+        "recyclable",
+        "biodegradable",
+        "compostable",
+        "zero waste",
+        "minimal packaging",
+        "eco packaging"
+      ],
+      "rationale": "",
+      "source": ""
+    }
   },
   "Beauty_Cosmetics": {
-    "vague_terms": [
-      "natural beauty",
-      "botanical",
-      "plant-based",
-      "nature-inspired",
-      "herbal",
-      "pure beauty",
-      "clean beauty",
-      "green beauty",
-      "conscious beauty",
-      "mindful beauty"
-    ],
-    "misleading_environmental_claims": [
-      "eco-friendly formula",
-      "sustainable beauty",
-      "earth-conscious",
-      "environmentally safe",
-      "ocean-friendly",
-      "reef-safe",
-      "planet-positive",
-      "carbon-neutral beauty",
-      "climate-conscious"
-    ],
-    "chemical_claims": [
-      "chemical-free",
-      "non-toxic",
-      "free from harsh chemicals",
-      "no nasty chemicals",
-      "toxin-free",
-      "paraben-free",
-      "sulfate-free",
-      "phthalate-free",
-      "free from synthetic ingredients"
-    ],
-    "cruelty_free_vegan": [
-      "cruelty-free",
-      "vegan",
-      "not tested on animals",
-      "animal-friendly",
-      "bunny approved"
-    ],
-    "organic_natural": [
-      "certified organic",
-      "organic ingredients",
-      "naturally derived",
-      "from nature",
-      "wild-harvested",
-      "organic extracts"
-    ],
-    "packaging_claims": [
-      "recyclable packaging",
-      "sustainable packaging",
-      "refillable",
-      "zero waste beauty",
-      "plastic-free",
-      "biodegradable packaging"
-    ]
+    "vague_terms": {
+      "terms": [
+        "natural beauty",
+        "botanical",
+        "plant-based",
+        "nature-inspired",
+        "herbal",
+        "pure beauty",
+        "clean beauty",
+        "green beauty",
+        "conscious beauty",
+        "mindful beauty"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "misleading_environmental_claims": {
+      "terms": [
+        "eco-friendly formula",
+        "sustainable beauty",
+        "earth-conscious",
+        "environmentally safe",
+        "ocean-friendly",
+        "reef-safe",
+        "planet-positive",
+        "carbon-neutral beauty",
+        "climate-conscious"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "chemical_claims": {
+      "terms": [
+        "chemical-free",
+        "non-toxic",
+        "free from harsh chemicals",
+        "no nasty chemicals",
+        "toxin-free",
+        "paraben-free",
+        "sulfate-free",
+        "phthalate-free",
+        "free from synthetic ingredients"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "cruelty_free_vegan": {
+      "terms": [
+        "cruelty-free",
+        "vegan",
+        "not tested on animals",
+        "animal-friendly",
+        "bunny approved"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "organic_natural": {
+      "terms": [
+        "certified organic",
+        "organic ingredients",
+        "naturally derived",
+        "from nature",
+        "wild-harvested",
+        "organic extracts"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "packaging_claims": {
+      "terms": [
+        "recyclable packaging",
+        "sustainable packaging",
+        "refillable",
+        "zero waste beauty",
+        "plastic-free",
+        "biodegradable packaging"
+      ],
+      "rationale": "",
+      "source": ""
+    }
   },
   "Fashion": {
-    "vague_terms": [
-      "eco-fashion",
-      "sustainable style",
-      "green fashion",
-      "conscious fashion",
-      "ethical fashion",
-      "responsible fashion",
-      "slow fashion",
-      "mindful wardrobe",
-      "earth-friendly apparel"
-    ],
-    "material_claims": [
-      "organic cotton",
-      "sustainable fibers",
-      "eco-fabric",
-      "recycled materials",
-      "upcycled",
-      "bio-based materials",
-      "natural fibers",
-      "bamboo fabric",
-      "hemp clothing",
-      "eco-textiles"
-    ],
-    "production_claims": [
-      "ethically made",
-      "fair trade",
-      "sustainably produced",
-      "low-impact production",
-      "carbon-neutral manufacturing",
-      "water-saving process",
-      "zero waste production",
-      "eco-friendly dyes",
-      "natural dyes",
-      "responsible manufacturing"
-    ],
-    "certification_vague": [
-      "certified sustainable",
-      "eco-certified",
-      "green certified",
-      "responsibly sourced"
-    ],
-    "circular_economy": [
-      "recyclable clothing",
-      "biodegradable fashion",
-      "circular fashion",
-      "cradle to cradle",
-      "take-back program",
-      "forever garment"
-    ],
-    "animal_welfare": [
-      "cruelty-free fashion",
-      "vegan leather",
-      "animal-friendly",
-      "faux leather",
-      "ethical wool"
-    ]
+    "vague_terms": {
+      "terms": [
+        "eco-fashion",
+        "sustainable style",
+        "green fashion",
+        "conscious fashion",
+        "ethical fashion",
+        "responsible fashion",
+        "slow fashion",
+        "mindful wardrobe",
+        "earth-friendly apparel"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "material_claims": {
+      "terms": [
+        "organic cotton",
+        "sustainable fibers",
+        "eco-fabric",
+        "recycled materials",
+        "upcycled",
+        "bio-based materials",
+        "natural fibers",
+        "bamboo fabric",
+        "hemp clothing",
+        "eco-textiles"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "production_claims": {
+      "terms": [
+        "ethically made",
+        "fair trade",
+        "sustainably produced",
+        "low-impact production",
+        "carbon-neutral manufacturing",
+        "water-saving process",
+        "zero waste production",
+        "eco-friendly dyes",
+        "natural dyes",
+        "responsible manufacturing"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "certification_vague": {
+      "terms": [
+        "certified sustainable",
+        "eco-certified",
+        "green certified",
+        "responsibly sourced"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "circular_economy": {
+      "terms": [
+        "recyclable clothing",
+        "biodegradable fashion",
+        "circular fashion",
+        "cradle to cradle",
+        "take-back program",
+        "forever garment"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "animal_welfare": {
+      "terms": [
+        "cruelty-free fashion",
+        "vegan leather",
+        "animal-friendly",
+        "faux leather",
+        "ethical wool"
+      ],
+      "rationale": "",
+      "source": ""
+    }
   },
   "Electronics": {
-    "vague_terms": [
-      "eco-friendly technology",
-      "green tech",
-      "sustainable electronics",
-      "environmentally responsible",
-      "planet-friendly devices",
-      "conscious technology",
-      "earth-safe electronics"
-    ],
-    "energy_claims": [
-      "energy-efficient",
-      "low power consumption",
-      "energy-saving mode",
-      "carbon-neutral device",
-      "climate-neutral",
-      "green energy certified",
-      "eco mode",
-      "power-saving technology"
-    ],
-    "material_claims": [
-      "recycled materials",
-      "sustainable materials",
-      "ocean-bound plastic",
-      "post-consumer recycled",
-      "bio-based plastics",
-      "conflict-free minerals",
-      "responsibly sourced materials"
-    ],
-    "packaging_claims": [
-      "plastic-free packaging",
-      "recyclable packaging",
-      "minimal packaging",
-      "sustainable packaging",
-      "biodegradable packaging",
-      "zero waste packaging",
-      "FSC-certified packaging"
-    ],
-    "lifecycle_claims": [
-      "designed for longevity",
-      "repairable",
-      "upgradeable",
-      "modular design",
-      "circular economy",
-      "take-back program",
-      "trade-in program",
-      "e-waste reduction"
-    ],
-    "certification_vague": [
-      "eco-certified",
-      "green certified",
-      "environmentally certified",
-      "sustainability certified"
-    ]
+    "vague_terms": {
+      "terms": [
+        "eco-friendly technology",
+        "green tech",
+        "sustainable electronics",
+        "environmentally responsible",
+        "planet-friendly devices",
+        "conscious technology",
+        "earth-safe electronics"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "energy_claims": {
+      "terms": [
+        "energy-efficient",
+        "low power consumption",
+        "energy-saving mode",
+        "carbon-neutral device",
+        "climate-neutral",
+        "green energy certified",
+        "eco mode",
+        "power-saving technology"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "material_claims": {
+      "terms": [
+        "recycled materials",
+        "sustainable materials",
+        "ocean-bound plastic",
+        "post-consumer recycled",
+        "bio-based plastics",
+        "conflict-free minerals",
+        "responsibly sourced materials"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "packaging_claims": {
+      "terms": [
+        "plastic-free packaging",
+        "recyclable packaging",
+        "minimal packaging",
+        "sustainable packaging",
+        "biodegradable packaging",
+        "zero waste packaging",
+        "FSC-certified packaging"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "lifecycle_claims": {
+      "terms": [
+        "designed for longevity",
+        "repairable",
+        "upgradeable",
+        "modular design",
+        "circular economy",
+        "take-back program",
+        "trade-in program",
+        "e-waste reduction"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "certification_vague": {
+      "terms": [
+        "eco-certified",
+        "green certified",
+        "environmentally certified",
+        "sustainability certified"
+      ],
+      "rationale": "",
+      "source": ""
+    }
   },
   "Home_Goods": {
-    "vague_terms": [
-      "eco-home",
-      "green living",
-      "sustainable home",
-      "natural home",
-      "eco-friendly home goods",
-      "conscious living",
-      "planet-friendly products",
-      "earth-safe home"
-    ],
-    "cleaning_products": [
-      "natural cleaning",
-      "eco-clean",
-      "green clean",
-      "chemical-free cleaning",
-      "plant-based formula",
-      "biodegradable cleaner",
-      "non-toxic cleaning",
-      "safe for family and planet",
-      "earth-friendly cleaner"
-    ],
-    "material_claims": [
-      "sustainable materials",
-      "recycled content",
-      "upcycled materials",
-      "renewable resources",
-      "bamboo products",
-      "reclaimed wood",
-      "eco-friendly materials",
-      "natural fibers",
-      "organic cotton"
-    ],
-    "production_claims": [
-      "sustainably made",
-      "ethically produced",
-      "carbon-neutral production",
-      "low-impact manufacturing",
-      "handcrafted",
-      "locally made",
-      "small batch production"
-    ],
-    "packaging_claims": [
-      "plastic-free",
-      "zero waste",
-      "recyclable packaging",
-      "compostable packaging",
-      "minimal packaging",
-      "reusable packaging"
-    ],
-    "performance_claims": [
-      "long-lasting",
-      "durable",
-      "built to last",
-      "timeless design",
-      "quality over quantity"
-    ]
+    "vague_terms": {
+      "terms": [
+        "eco-home",
+        "green living",
+        "sustainable home",
+        "natural home",
+        "eco-friendly home goods",
+        "conscious living",
+        "planet-friendly products",
+        "earth-safe home"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "cleaning_products": {
+      "terms": [
+        "natural cleaning",
+        "eco-clean",
+        "green clean",
+        "chemical-free cleaning",
+        "plant-based formula",
+        "biodegradable cleaner",
+        "non-toxic cleaning",
+        "safe for family and planet",
+        "earth-friendly cleaner"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "material_claims": {
+      "terms": [
+        "sustainable materials",
+        "recycled content",
+        "upcycled materials",
+        "renewable resources",
+        "bamboo products",
+        "reclaimed wood",
+        "eco-friendly materials",
+        "natural fibers",
+        "organic cotton"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "production_claims": {
+      "terms": [
+        "sustainably made",
+        "ethically produced",
+        "carbon-neutral production",
+        "low-impact manufacturing",
+        "handcrafted",
+        "locally made",
+        "small batch production"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "packaging_claims": {
+      "terms": [
+        "plastic-free",
+        "zero waste",
+        "recyclable packaging",
+        "compostable packaging",
+        "minimal packaging",
+        "reusable packaging"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "performance_claims": {
+      "terms": [
+        "long-lasting",
+        "durable",
+        "built to last",
+        "timeless design",
+        "quality over quantity"
+      ],
+      "rationale": "",
+      "source": ""
+    }
   },
   "Automotive": {
-    "vague_terms": [
-      "eco-friendly vehicle",
-      "green car",
-      "sustainable transportation",
-      "environmentally conscious",
-      "planet-friendly driving",
-      "clean mobility",
-      "eco-driving",
-      "green mobility"
-    ],
-    "fuel_emission_claims": [
-      "low emissions",
-      "reduced emissions",
-      "cleaner emissions",
-      "carbon-neutral",
-      "climate-neutral",
-      "emission-free",
-      "zero emissions",
-      "clean exhaust",
-      "eco-friendly engine"
-    ],
-    "efficiency_claims": [
-      "fuel-efficient",
-      "high fuel economy",
-      "eco mode",
-      "energy-saving technology",
-      "hybrid technology",
-      "electric powertrain",
-      "efficient performance"
-    ],
-    "material_claims": [
-      "recycled materials",
-      "sustainable interior",
-      "eco-friendly materials",
-      "vegan leather",
-      "recycled plastics",
-      "renewable materials",
-      "bio-based materials"
-    ],
-    "manufacturing_claims": [
-      "sustainable manufacturing",
-      "carbon-neutral factory",
-      "eco-friendly production",
-      "green assembly",
-      "water-saving production",
-      "renewable energy powered"
-    ],
-    "lifecycle_claims": [
-      "recyclable vehicle",
-      "circular economy",
-      "cradle to cradle design",
-      "designed for recycling",
-      "long-lasting durability",
-      "sustainable lifecycle"
-    ],
-    "alternative_fuels": [
-      "biofuel compatible",
-      "alternative fuel",
-      "renewable fuel",
-      "clean energy",
-      "green fuel option"
-    ]
+    "vague_terms": {
+      "terms": [
+        "eco-friendly vehicle",
+        "green car",
+        "sustainable transportation",
+        "environmentally conscious",
+        "planet-friendly driving",
+        "clean mobility",
+        "eco-driving",
+        "green mobility"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "fuel_emission_claims": {
+      "terms": [
+        "low emissions",
+        "reduced emissions",
+        "cleaner emissions",
+        "carbon-neutral",
+        "climate-neutral",
+        "emission-free",
+        "zero emissions",
+        "clean exhaust",
+        "eco-friendly engine"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "efficiency_claims": {
+      "terms": [
+        "fuel-efficient",
+        "high fuel economy",
+        "eco mode",
+        "energy-saving technology",
+        "hybrid technology",
+        "electric powertrain",
+        "efficient performance"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "material_claims": {
+      "terms": [
+        "recycled materials",
+        "sustainable interior",
+        "eco-friendly materials",
+        "vegan leather",
+        "recycled plastics",
+        "renewable materials",
+        "bio-based materials"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "manufacturing_claims": {
+      "terms": [
+        "sustainable manufacturing",
+        "carbon-neutral factory",
+        "eco-friendly production",
+        "green assembly",
+        "water-saving production",
+        "renewable energy powered"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "lifecycle_claims": {
+      "terms": [
+        "recyclable vehicle",
+        "circular economy",
+        "cradle to cradle design",
+        "designed for recycling",
+        "long-lasting durability",
+        "sustainable lifecycle"
+      ],
+      "rationale": "",
+      "source": ""
+    },
+    "alternative_fuels": {
+      "terms": [
+        "biofuel compatible",
+        "alternative fuel",
+        "renewable fuel",
+        "clean energy",
+        "green fuel option"
+      ],
+      "rationale": "",
+      "source": ""
+    }
   }
 }

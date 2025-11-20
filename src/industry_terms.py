@@ -10,12 +10,12 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 
-def load_industry_terms() -> Dict[str, Dict[str, List[str]]]:
+def load_industry_terms() -> Dict[str, Dict[str, Dict]]:
     """
     Load industry-specific greenwashing terms from the JSON data file.
     
     Returns:
-        Dictionary with industry names as keys and categorized terms as values.
+        Dictionary with industry names as keys and categorized terms with metadata as values.
     """
     data_path = Path(__file__).parent.parent / "data" / "industry_greenwashing_terms.json"
     
@@ -34,7 +34,7 @@ def get_all_industries() -> List[str]:
     return list(terms.keys())
 
 
-def get_terms_for_industry(industry: str) -> Optional[Dict[str, List[str]]]:
+def get_terms_for_industry(industry: str) -> Optional[Dict[str, Dict]]:
     """
     Get all categorized terms for a specific industry.
     
@@ -42,7 +42,7 @@ def get_terms_for_industry(industry: str) -> Optional[Dict[str, List[str]]]:
         industry: Name of the industry (e.g., "Food", "Beauty_Cosmetics", "Fashion")
     
     Returns:
-        Dictionary of categorized terms for the industry, or None if industry not found.
+        Dictionary of categorized terms with metadata for the industry, or None if industry not found.
     """
     terms = load_industry_terms()
     return terms.get(industry)
@@ -63,8 +63,13 @@ def get_all_terms_for_industry(industry: str) -> List[str]:
         return []
     
     all_terms = []
-    for category_terms in industry_data.values():
-        all_terms.extend(category_terms)
+    for category_data in industry_data.values():
+        # Extract terms from the new structure
+        if isinstance(category_data, dict) and 'terms' in category_data:
+            all_terms.extend(category_data['terms'])
+        elif isinstance(category_data, list):
+            # Backward compatibility
+            all_terms.extend(category_data)
     
     return all_terms
 
@@ -88,9 +93,26 @@ def print_industry_terms(industry: str, show_categories: bool = True) -> None:
     print(f"Greenwashing Terms for {industry.replace('_', '/')}")
     print(f"{'='*70}\n")
     
-    for category, terms in industry_data.items():
+    for category, category_data in industry_data.items():
+        # Extract terms from the new structure
+        if isinstance(category_data, dict) and 'terms' in category_data:
+            terms = category_data['terms']
+            rationale = category_data.get('rationale', '')
+            source = category_data.get('source', '')
+        elif isinstance(category_data, list):
+            # Backward compatibility
+            terms = category_data
+            rationale = ''
+            source = ''
+        else:
+            continue
+            
         if show_categories:
             print(f"{category.replace('_', ' ').title()}:")
+            if rationale:
+                print(f"  Rationale: {rationale}")
+            if source:
+                print(f"  Source: {source}")
             for term in terms:
                 print(f"  • {term}")
             print()
@@ -98,7 +120,14 @@ def print_industry_terms(industry: str, show_categories: bool = True) -> None:
             for term in terms:
                 print(f"  • {term}")
     
-    total_terms = sum(len(terms) for terms in industry_data.values())
+    # Calculate total terms
+    total_terms = 0
+    for category_data in industry_data.values():
+        if isinstance(category_data, dict) and 'terms' in category_data:
+            total_terms += len(category_data['terms'])
+        elif isinstance(category_data, list):
+            total_terms += len(category_data)
+    
     print(f"\nTotal terms: {total_terms}")
 
 
@@ -133,7 +162,12 @@ def get_summary_statistics() -> Dict[str, int]:
     terms_per_industry = {}
     
     for industry, categories in all_terms.items():
-        industry_term_count = sum(len(terms) for terms in categories.values())
+        industry_term_count = 0
+        for category_data in categories.values():
+            if isinstance(category_data, dict) and 'terms' in category_data:
+                industry_term_count += len(category_data['terms'])
+            elif isinstance(category_data, list):
+                industry_term_count += len(category_data)
         total_terms += industry_term_count
         terms_per_industry[industry] = industry_term_count
     

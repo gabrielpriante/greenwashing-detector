@@ -43,7 +43,13 @@ def example_2_get_food_terms():
     
     if food_terms:
         print("Food industry categories:")
-        for category, terms in food_terms.items():
+        for category, category_data in food_terms.items():
+            # Handle new structure with metadata
+            if isinstance(category_data, dict) and 'terms' in category_data:
+                terms = category_data['terms']
+            else:
+                terms = category_data
+            
             print(f"\n{category.replace('_', ' ').title()} ({len(terms)} terms):")
             # Show first 5 terms as examples
             for term in terms[:5]:
@@ -115,8 +121,14 @@ def example_5_search_specific_category():
     for industry in get_all_industries():
         industry_data = get_terms_for_industry(industry)
         if industry_data:
-            for category, terms in industry_data.items():
+            for category, category_data in industry_data.items():
                 if 'packaging' in category.lower():
+                    # Handle new structure with metadata
+                    if isinstance(category_data, dict) and 'terms' in category_data:
+                        terms = category_data['terms']
+                    else:
+                        terms = category_data
+                    
                     print(f"{industry.replace('_', '/')} - {category.replace('_', ' ').title()}:")
                     for term in terms:
                         print(f"  • {term}")
