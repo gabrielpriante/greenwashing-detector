@@ -15,7 +15,6 @@ from io import StringIO
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
-from cli import format_rich_report, analyze_command
 from greenwashing_scoring import simple_greenwashing_score
 
 

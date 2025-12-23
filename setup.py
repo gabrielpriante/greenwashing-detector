@@ -6,8 +6,6 @@ setup(
     description="A tool for detecting potential greenwashing in text",
     author="Gabriel Priante",
     packages=find_packages(),
-    package_dir={"": "."},
-    py_modules=["src.cli", "src.greenwashing_scoring", "src.text_cleaning", "src.industry_terms"],
     install_requires=[
         "pandas>=2.0.0",
         "numpy>=1.24.0",

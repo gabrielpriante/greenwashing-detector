@@ -17,7 +17,7 @@ try:
     from rich.console import Console
     from rich.panel import Panel
 except ImportError:
-    print("Error: Required packages not installed. Please run: pip install typer rich")
+    print("Error: Required packages not installed. Please run: pip install -r requirements.txt")
     sys.exit(1)
 
 # Add src directory to path for imports
@@ -113,14 +113,17 @@ def analyze_command(
             with open(file, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
                 
-                # Check if text_col exists
+                # Check if text_col exists and capture fieldnames
                 if reader.fieldnames is None:
                     console.print(f"[red]Error: CSV file is empty or invalid[/red]")
                     raise typer.Exit(1)
                 
-                if text_col not in reader.fieldnames:
+                # Capture fieldnames before consuming the reader
+                original_fieldnames = list(reader.fieldnames)
+                
+                if text_col not in original_fieldnames:
                     console.print(f"[red]Error: Column '{text_col}' not found in CSV[/red]")
-                    console.print(f"Available columns: {', '.join(reader.fieldnames)}")
+                    console.print(f"Available columns: {', '.join(original_fieldnames)}")
                     raise typer.Exit(1)
                 
                 # Process rows
@@ -167,7 +170,7 @@ def analyze_command(
                         raise typer.Exit(1)
                     
                     # Get fieldnames (original + new columns)
-                    fieldnames = list(reader.fieldnames) + ['score', 'risk_level', 'matched_terms', 'matched_count']
+                    fieldnames = original_fieldnames + ['score', 'risk_level', 'matched_terms', 'matched_count']
                     
                     with open(out, 'w', encoding='utf-8', newline='') as outfile:
                         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
