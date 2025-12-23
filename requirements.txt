@@ -16,3 +16,7 @@ python-dotenv>=1.0.0
 # Data visualization (optional, for notebook analysis)
 matplotlib>=3.7.0
 seaborn>=0.12.0
+
+# CLI support
+typer>=0.9.0
+rich>=13.0.0

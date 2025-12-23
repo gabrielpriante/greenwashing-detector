@@ -57,7 +57,61 @@ greenwashing-detector/
    pip install -r requirements.txt
    ```
 
+4. **Install the CLI tool** (optional, for command-line usage):
+   ```bash
+   pip install -e .
+   ```
+
 ## How to Use
+
+### Using the Command-Line Interface (CLI)
+
+The fastest way to analyze text is using the `greenwash` command-line tool:
+
+#### Analyze a single text string
+
+```bash
+greenwash analyze "eco-friendly and all natural"
+```
+
+Output:
+```
+╭──────────────────────── Analysis Summary ────────────────────────╮
+│ Text Length: 4 words                                             │
+│ Greenwashing Score: 50/100                                       │
+│ Risk Level: Medium                                               │
+╰──────────────────────────────────────────────────────────────────╯
+
+Matched Keywords (2):
+  • eco friendly
+  • all natural
+```
+
+#### Get JSON output
+
+```bash
+greenwash analyze "eco-friendly and all natural" --format json
+```
+
+#### Process a CSV file in batch mode
+
+```bash
+greenwash analyze --file products.csv --text-col description --out results.csv
+```
+
+This will:
+- Read `products.csv`
+- Analyze the text in the `description` column
+- Add new columns: `score`, `risk_level`, `matched_terms`, `matched_count`
+- Save results to `results.csv`
+
+#### Output CSV analysis as JSON
+
+```bash
+greenwash analyze --file products.csv --text-col description --format json
+```
+
+This outputs the analysis results as JSON to stdout (useful for piping to other tools).
 
 ### Running the Jupyter Notebook
 
@@ -101,6 +155,13 @@ print(analyze_text(text))
 ```
 
 ## Features
+
+### Command-Line Interface (`greenwash` CLI)
+- Analyze single text strings with rich formatted output
+- Batch process CSV files with greenwashing scores
+- JSON output for integration with other tools
+- Error handling for missing files, columns, and empty text
+- Clean terminal output using Rich library
 
 ### Text Cleaning (`text_cleaner.py`)
 - Remove URLs, emails, and special characters
