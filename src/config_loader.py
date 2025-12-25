@@ -118,7 +118,8 @@ def load_config(config_path: Optional[str] = None) -> Dict[str, Any]:
                     f"Got: {weight}"
                 )
             
-            flat_keywords[keyword] = int(weight)
+            # Keep numeric type (int or float)
+            flat_keywords[keyword] = weight
     
     if not flat_keywords:
         raise ConfigError(
