@@ -192,6 +192,97 @@ The detector looks for two types of problematic terms:
 
 Each keyword has a weight based on how often it's misused in greenwashing. You can view and modify these in `src/scoring.py`.
 
+## Customize Scoring
+
+You can customize the greenwashing detection by creating your own YAML configuration file. This allows you to:
+
+- **Add or modify keywords** and their weights
+- **Adjust risk thresholds** (Low/Medium/High)
+- **Organize keywords by category** for better maintainability
+
+### Configuration File Structure
+
+Create a YAML file with the following structure:
+
+```yaml
+# Custom greenwashing scoring configuration
+
+keywords:
+  # Organize keywords by category (any category names you want)
+  generic:
+    eco friendly: 2
+    green: 1
+    sustainable: 2
+  
+  high_impact:
+    carbon neutral: 4
+    net zero: 4
+  
+  vague:
+    all natural: 3
+    chemical free: 3
+
+# Thresholds for risk levels (based on calculated score)
+# Score = sum of matched keyword weights * 10
+thresholds:
+  low: 0      # Scores < 30 are Low risk
+  medium: 30  # Scores 30-59 are Medium risk  
+  high: 60    # Scores >= 60 are High risk
+```
+
+### Using Custom Configuration
+
+#### In Python Code
+
+```python
+from src.greenwashing_scoring import simple_greenwashing_score
+
+# Use custom config
+result = simple_greenwashing_score(
+    "eco-friendly product",
+    config_path="path/to/your/config.yml"
+)
+
+# Without config_path, uses default settings
+result = simple_greenwashing_score("eco-friendly product")
+```
+
+#### Example: Adjusting Weights
+
+To make the detector more or less sensitive, adjust keyword weights:
+
+```yaml
+keywords:
+  strict:
+    eco friendly: 10  # Higher weight = higher score
+    green: 5
+thresholds:
+  low: 0
+  medium: 30
+  high: 60
+```
+
+#### Example: Adjusting Thresholds
+
+To change when text is flagged as high risk:
+
+```yaml
+keywords:
+  generic:
+    eco friendly: 2
+    sustainable: 2
+thresholds:
+  low: 0
+  medium: 40   # Raised from 30
+  high: 80     # Raised from 60
+```
+
+### Default Configuration
+
+The default configuration is located at `config/default_scoring.yml`. You can use this as a template for your custom configurations.
+
+**Note**: If you don't provide a config file, the tool uses hardcoded defaults for backward compatibility.
+
 ### Industry-Specific Greenwashing Terms
 
 This project includes a comprehensive database of **264 greenwashing terms** organized by **6 industries**:
