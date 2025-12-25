@@ -66,6 +66,7 @@ def analyze_command(
     text_col: Optional[str] = typer.Option(None, "--text-col", "-c", help="Column name containing text to analyze"),
     out: Optional[Path] = typer.Option(None, "--out", "-o", help="Output CSV file path"),
     format_type: Optional[str] = typer.Option("text", "--format", help="Output format: text or json"),
+    config: Optional[Path] = typer.Option(None, "--config", help="Path to custom YAML config file"),
 ):
     """
     Analyze text or CSV file for potential greenwashing.
@@ -77,14 +78,28 @@ def analyze_command(
       greenwash analyze --file products.csv --text-col description --out results.csv
       
       greenwash analyze --file products.csv --text-col description --format json
+      
+      greenwash analyze "eco-friendly" --config custom_config.yml
     """
+    # Validate config file if provided
+    config_path = None
+    if config:
+        if not config.exists():
+            console.print(f"[red]Error: Config file not found: {config}[/red]")
+            raise typer.Exit(1)
+        config_path = str(config)
+    
     # Single text analysis mode
     if text and not file:
         if not text.strip():
             console.print("[red]Error: Text cannot be empty[/red]")
             raise typer.Exit(1)
         
-        result = simple_greenwashing_score(text)
+        try:
+            result = simple_greenwashing_score(text, config_path)
+        except Exception as e:
+            console.print(f"[red]Error: {e}[/red]")
+            raise typer.Exit(1)
         
         if format_type == "json":
             output = {
@@ -141,7 +156,11 @@ def analyze_command(
                             'matched_count': 0
                         })
                     else:
-                        analysis = simple_greenwashing_score(text_value)
+                        try:
+                            analysis = simple_greenwashing_score(text_value, config_path)
+                        except Exception as e:
+                            console.print(f"[red]Error processing row: {e}[/red]")
+                            raise typer.Exit(1)
                         results.append({
                             **row,
                             'score': analysis['score'],

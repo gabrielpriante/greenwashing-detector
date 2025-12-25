@@ -1,0 +1,37 @@
+# Default Greenwashing Scoring Configuration
+# This file defines keywords, weights, and risk thresholds for greenwashing detection
+
+# Keyword categories with their weights
+# Higher weights indicate more suspicious/misleading terms
+keywords:
+  # Generic environmental claims
+  generic:
+    eco friendly: 2
+    environmentally friendly: 2
+    green: 1
+    planet friendly: 2
+    sustainable: 2
+    sustainably sourced: 3
+    responsibly sourced: 3
+  
+  # High-impact/specific claims that are often unsubstantiated
+  high_impact:
+    carbon neutral: 4
+    net zero: 4
+    zero emissions: 4
+    climate positive: 4
+  
+  # Vague/misleading terms
+  vague:
+    100 natural: 3
+    all natural: 3
+    chemical free: 3
+    non toxic: 2
+
+# Risk level thresholds (based on calculated score)
+# Score is calculated as: sum of matched keyword weights * 10
+# Maximum possible score is 100
+thresholds:
+  low: 0      # Scores < 30 are Low risk
+  medium: 30  # Scores 30-59 are Medium risk
+  high: 60    # Scores >= 60 are High risk

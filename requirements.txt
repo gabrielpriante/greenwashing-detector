@@ -12,6 +12,7 @@ ipykernel>=6.25.0
 
 # Text processing utilities
 python-dotenv>=1.0.0
+pyyaml>=6.0.0
 
 # Data visualization (optional, for notebook analysis)
 matplotlib>=3.7.0
