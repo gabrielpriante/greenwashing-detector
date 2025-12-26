@@ -110,11 +110,13 @@ def analyze_command(
             raise typer.Exit(1)
         
         if format_type == "json":
+            matched = result.get('matched_terms', result.get('matched_keywords', []))
             output = {
                 "text": text,
                 "score": result['score'],
                 "risk_level": result['risk_level'],
-                "matched_terms": result.get('matched_terms', result.get('matched_keywords', [])),
+                "matched_terms": matched,
+                "matched_keywords": matched,  # Backward compatibility
                 "negated_terms": result.get('negated_terms', []),
             }
             console.print(json.dumps(output, indent=2))
@@ -157,11 +159,13 @@ def analyze_command(
                     
                     if not text_value or not text_value.strip():
                         # Handle empty text
+                        matched_str = ''
                         results.append({
                             **row,
                             'score': 0,
                             'risk_level': 'Low',
-                            'matched_terms': '',
+                            'matched_terms': matched_str,
+                            'matched_keywords': matched_str,  # Backward compatibility
                             'matched_count': 0,
                             'negated_terms': ''
                         })
@@ -171,11 +175,13 @@ def analyze_command(
                         except Exception as e:
                             console.print(f"[red]Error processing row: {e}[/red]")
                             raise typer.Exit(1)
+                        matched_str = ', '.join(analysis.get('matched_terms', analysis.get('matched_keywords', [])))
                         results.append({
                             **row,
                             'score': analysis['score'],
                             'risk_level': analysis['risk_level'],
-                            'matched_terms': ', '.join(analysis.get('matched_terms', analysis.get('matched_keywords', []))),
+                            'matched_terms': matched_str,
+                            'matched_keywords': matched_str,  # Backward compatibility
                             'matched_count': len(analysis.get('matched_terms', analysis.get('matched_keywords', []))),
                             'negated_terms': ', '.join(analysis.get('negated_terms', []))
                         })
@@ -185,11 +191,13 @@ def analyze_command(
                     # JSON output to stdout
                     output = []
                     for result in results:
+                        matched_list = result['matched_terms'].split(', ') if result['matched_terms'] else []
                         output.append({
                             text_col: result[text_col],
                             'score': result['score'],
                             'risk_level': result['risk_level'],
-                            'matched_terms': result['matched_terms'].split(', ') if result['matched_terms'] else [],
+                            'matched_terms': matched_list,
+                            'matched_keywords': matched_list,  # Backward compatibility
                             'matched_count': result['matched_count'],
                             'negated_terms': result['negated_terms'].split(', ') if result['negated_terms'] else []
                         })
@@ -201,7 +209,7 @@ def analyze_command(
                         raise typer.Exit(1)
                     
                     # Get fieldnames (original + new columns)
-                    fieldnames = original_fieldnames + ['score', 'risk_level', 'matched_terms', 'matched_count', 'negated_terms']
+                    fieldnames = original_fieldnames + ['score', 'risk_level', 'matched_terms', 'matched_keywords', 'matched_count', 'negated_terms']
                     
                     with open(out, 'w', encoding='utf-8', newline='') as outfile:
                         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
