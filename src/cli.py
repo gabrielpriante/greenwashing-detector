@@ -36,6 +36,19 @@ app = typer.Typer(
 console = Console()
 
 
+def get_matched_terms(result: dict) -> list:
+    """
+    Extract matched terms from result with backward compatibility fallback.
+    
+    Args:
+        result: The scoring result dictionary
+    
+    Returns:
+        List of matched terms
+    """
+    return result.get('matched_terms', result.get('matched_keywords', []))
+
+
 def format_rich_report(text: str, result: dict) -> None:
     """Format and display analysis result using rich formatting."""
     word_count = len(text.split())
@@ -48,7 +61,7 @@ def format_rich_report(text: str, result: dict) -> None:
     console.print(Panel(info_text, title="Analysis Summary", border_style="blue"))
     
     # Display matched keywords
-    matched = result.get('matched_terms', result.get('matched_keywords', []))
+    matched = get_matched_terms(result)
     if matched:
         console.print(f"\n[bold]Matched Keywords ({len(matched)}):[/bold]")
         for keyword in matched:
@@ -110,7 +123,7 @@ def analyze_command(
             raise typer.Exit(1)
         
         if format_type == "json":
-            matched = result.get('matched_terms', result.get('matched_keywords', []))
+            matched = get_matched_terms(result)
             output = {
                 "text": text,
                 "score": result['score'],
@@ -175,14 +188,14 @@ def analyze_command(
                         except Exception as e:
                             console.print(f"[red]Error processing row: {e}[/red]")
                             raise typer.Exit(1)
-                        matched_str = ', '.join(analysis.get('matched_terms', analysis.get('matched_keywords', [])))
+                        matched_str = ', '.join(get_matched_terms(analysis))
                         results.append({
                             **row,
                             'score': analysis['score'],
                             'risk_level': analysis['risk_level'],
                             'matched_terms': matched_str,
                             'matched_keywords': matched_str,  # Backward compatibility
-                            'matched_count': len(analysis.get('matched_terms', analysis.get('matched_keywords', []))),
+                            'matched_count': len(get_matched_terms(analysis)),
                             'negated_terms': ', '.join(analysis.get('negated_terms', []))
                         })
                 

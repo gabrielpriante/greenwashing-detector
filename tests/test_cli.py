@@ -177,8 +177,6 @@ class TestCLIBackwardCompatibility(unittest.TestCase):
     
     def test_csv_output_has_both_matched_columns(self):
         """Test that CSV output includes both matched_terms and matched_keywords columns."""
-        import tempfile
-        
         # Simulate CSV row creation
         text = "eco-friendly product"
         analysis = simple_greenwashing_score(text)
