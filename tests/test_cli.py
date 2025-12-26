@@ -120,5 +120,86 @@ class TestCLIIntegration(unittest.TestCase):
         self.assertEqual(len(result['matched_keywords']), 0)
 
 
+class TestCLIBackwardCompatibility(unittest.TestCase):
+    """Test backward compatibility for CLI outputs."""
+    
+    def test_json_output_has_both_matched_fields(self):
+        """Test that JSON output includes both matched_terms and matched_keywords."""
+        text = "eco-friendly product"
+        result = simple_greenwashing_score(text)
+        
+        # Simulate CLI JSON output structure
+        matched = result.get('matched_terms', result.get('matched_keywords', []))
+        output = {
+            "text": text,
+            "score": result['score'],
+            "risk_level": result['risk_level'],
+            "matched_terms": matched,
+            "matched_keywords": matched,
+            "negated_terms": result.get('negated_terms', []),
+        }
+        
+        # Assert both keys exist
+        self.assertIn('matched_terms', output)
+        self.assertIn('matched_keywords', output)
+        
+        # Assert they are equal
+        self.assertEqual(output['matched_terms'], output['matched_keywords'])
+        
+        # Verify it's a list
+        self.assertIsInstance(output['matched_terms'], list)
+        self.assertIsInstance(output['matched_keywords'], list)
+    
+    def test_json_output_with_negation(self):
+        """Test JSON output with negated terms includes both matched fields."""
+        text = "not eco-friendly but carbon neutral"
+        result = simple_greenwashing_score(text)
+        
+        # Simulate CLI JSON output structure
+        matched = result.get('matched_terms', result.get('matched_keywords', []))
+        output = {
+            "text": text,
+            "score": result['score'],
+            "risk_level": result['risk_level'],
+            "matched_terms": matched,
+            "matched_keywords": matched,
+            "negated_terms": result.get('negated_terms', []),
+        }
+        
+        # Assert both keys exist and are equal
+        self.assertIn('matched_terms', output)
+        self.assertIn('matched_keywords', output)
+        self.assertEqual(output['matched_terms'], output['matched_keywords'])
+        
+        # Verify negated_terms exists
+        self.assertIn('negated_terms', output)
+        self.assertIn('eco friendly', output['negated_terms'])
+    
+    def test_csv_output_has_both_matched_columns(self):
+        """Test that CSV output includes both matched_terms and matched_keywords columns."""
+        # Simulate CSV row creation
+        text = "eco-friendly product"
+        analysis = simple_greenwashing_score(text)
+        matched_str = ', '.join(analysis.get('matched_terms', analysis.get('matched_keywords', [])))
+        
+        row = {
+            'product': 'Test Product',
+            'score': analysis['score'],
+            'risk_level': analysis['risk_level'],
+            'matched_terms': matched_str,
+            'matched_keywords': matched_str,
+            'matched_count': len(analysis.get('matched_terms', analysis.get('matched_keywords', []))),
+            'negated_terms': ', '.join(analysis.get('negated_terms', []))
+        }
+        
+        # Verify both keys exist
+        self.assertIn('matched_terms', row)
+        self.assertIn('matched_keywords', row)
+        
+        # Verify they have the same value
+        self.assertEqual(row['matched_terms'], row['matched_keywords'])
+        self.assertEqual(row['matched_terms'], 'eco friendly')
+
+
 if __name__ == '__main__':
     unittest.main()
