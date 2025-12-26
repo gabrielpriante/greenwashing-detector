@@ -196,6 +196,17 @@ class TestNegationHandling(unittest.TestCase):
         # 'sustainable' should be matched (negation is far away)
         self.assertIn('sustainable', result['matched_terms'])
         self.assertEqual(result['score'], 20)
+    
+    def test_phrase_with_mixed_negation_instances(self):
+        """Test that a phrase appearing both negated and non-negated counts as matched."""
+        text = "This is not eco friendly but that other product is eco friendly"
+        result = simple_greenwashing_score(text)
+        
+        # Since one instance is not negated, it should be counted as matched
+        self.assertIn('eco friendly', result['matched_terms'])
+        self.assertNotIn('eco friendly', result['negated_terms'])
+        # Score should be > 0 because we have a non-negated match
+        self.assertGreater(result['score'], 0)
 
 
 class TestBackwardCompatibility(unittest.TestCase):

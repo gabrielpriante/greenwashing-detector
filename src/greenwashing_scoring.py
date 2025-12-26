@@ -63,7 +63,7 @@ def _is_negated(text: str, match_start: int) -> bool:
     tokens = before_text.split()
     
     # Check the last MAX_NEGATION_DISTANCE tokens for negation words
-    last_tokens = tokens[-MAX_NEGATION_DISTANCE:] if len(tokens) >= MAX_NEGATION_DISTANCE else tokens
+    last_tokens = tokens[-MAX_NEGATION_DISTANCE:]
     
     for token in last_tokens:
         # Remove punctuation from token for comparison
@@ -130,16 +130,24 @@ def simple_greenwashing_score(text: str, config_path: Optional[str] = None) -> D
         
         if matches:
             # Check each match for negation
+            has_non_negated_match = False
+            has_negated_match = False
+            
             for match_start, match_end in matches:
                 if _is_negated(cleaned, match_start):
-                    # This match is negated, add to negated list but don't count toward score
-                    if phrase not in negated:
-                        negated.append(phrase)
+                    has_negated_match = True
                 else:
-                    # Valid match, add to matched list and count toward score
-                    if phrase not in matched:
-                        matched.append(phrase)
-                        total_weight += weight
+                    has_non_negated_match = True
+            
+            # If at least one instance is not negated, count it as matched
+            if has_non_negated_match:
+                if phrase not in matched:
+                    matched.append(phrase)
+                    total_weight += weight
+            # Only add to negated if ALL instances were negated
+            elif has_negated_match:
+                if phrase not in negated:
+                    negated.append(phrase)
 
     score = max(0, min(100, total_weight * 10))
 
