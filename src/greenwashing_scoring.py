@@ -1,6 +1,6 @@
 import re
 from typing import Dict, List, Optional, Tuple
-from text_cleaning import basic_clean_text, tokenize
+from text_cleaning import basic_clean_text
 from config_loader import load_config, get_default_config, ConfigError
 
 # Default hardcoded keywords for backward compatibility
