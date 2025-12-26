@@ -1,5 +1,6 @@
-from typing import Dict, List, Optional
-from text_cleaning import basic_clean_text
+import re
+from typing import Dict, List, Optional, Tuple
+from text_cleaning import basic_clean_text, tokenize
 from config_loader import load_config, get_default_config, ConfigError
 
 # Default hardcoded keywords for backward compatibility
@@ -19,7 +20,72 @@ GREENWASHING_KEYWORDS: Dict[str, int] = {
     "all natural": 3,
     "chemical free": 3,
     "non toxic": 2,
+    "plastic free": 3,
+    "biodegradable": 2,
 }
+
+# Negation words to detect
+NEGATION_WORDS = {"not", "no", "never"}
+
+def _create_phrase_pattern(phrase: str) -> re.Pattern:
+    """
+    Create a regex pattern for phrase matching with word boundaries.
+    
+    Args:
+        phrase: The phrase to create a pattern for (e.g., "carbon neutral")
+    
+    Returns:
+        Compiled regex pattern with word boundaries
+    """
+    # Escape special regex characters and use word boundaries
+    escaped = re.escape(phrase)
+    # Use word boundaries to ensure we match complete phrases
+    return re.compile(r'\b' + escaped + r'\b', re.IGNORECASE)
+
+def _is_negated(text: str, match_start: int) -> bool:
+    """
+    Check if a matched phrase is negated by a negation word within 3 tokens before it.
+    
+    Args:
+        text: The full text being analyzed
+        match_start: The start position of the matched phrase
+    
+    Returns:
+        True if the phrase is negated, False otherwise
+    """
+    # Get text before the match
+    before_text = text[:match_start].lower()
+    
+    # Tokenize the text before the match
+    tokens = before_text.split()
+    
+    # Check the last 3 tokens for negation words
+    last_tokens = tokens[-3:] if len(tokens) >= 3 else tokens
+    
+    for token in last_tokens:
+        # Remove punctuation from token for comparison
+        clean_token = re.sub(r'[^\w]', '', token)
+        if clean_token in NEGATION_WORDS:
+            return True
+    
+    return False
+
+def _find_phrase_matches(text: str, phrase: str) -> List[Tuple[int, int]]:
+    """
+    Find all matches of a phrase in text using word boundaries.
+    
+    Args:
+        text: The text to search in
+        phrase: The phrase to search for
+    
+    Returns:
+        List of (start, end) positions for each match
+    """
+    pattern = _create_phrase_pattern(phrase)
+    matches = []
+    for match in pattern.finditer(text):
+        matches.append((match.start(), match.end()))
+    return matches
 
 def simple_greenwashing_score(text: str, config_path: Optional[str] = None) -> Dict[str, object]:
     """
@@ -30,7 +96,7 @@ def simple_greenwashing_score(text: str, config_path: Optional[str] = None) -> D
         config_path: Optional path to YAML config file. If None, uses hardcoded defaults.
     
     Returns:
-        Dictionary with 'score', 'risk_level', and 'matched_keywords'.
+        Dictionary with 'score', 'risk_level', 'matched_terms', and 'negated_terms'.
     
     Raises:
         ConfigError: If config file is provided but invalid.
@@ -53,11 +119,24 @@ def simple_greenwashing_score(text: str, config_path: Optional[str] = None) -> D
     
     total_weight = 0
     matched: List[str] = []
+    negated: List[str] = []
 
     for phrase, weight in keywords.items():
-        if phrase in cleaned:
-            matched.append(phrase)
-            total_weight += weight
+        # Find all matches of this phrase with word boundaries
+        matches = _find_phrase_matches(cleaned, phrase)
+        
+        if matches:
+            # Check each match for negation
+            for match_start, match_end in matches:
+                if _is_negated(cleaned, match_start):
+                    # This match is negated, add to negated list but don't count toward score
+                    if phrase not in negated:
+                        negated.append(phrase)
+                else:
+                    # Valid match, add to matched list and count toward score
+                    if phrase not in matched:
+                        matched.append(phrase)
+                        total_weight += weight
 
     score = max(0, min(100, total_weight * 10))
 
@@ -72,5 +151,8 @@ def simple_greenwashing_score(text: str, config_path: Optional[str] = None) -> D
     return {
         "score": score,
         "risk_level": risk,
+        "matched_terms": matched,
+        "negated_terms": negated,
+        # Keep matched_keywords for backward compatibility
         "matched_keywords": matched,
     }

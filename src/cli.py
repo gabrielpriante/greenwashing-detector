@@ -48,13 +48,21 @@ def format_rich_report(text: str, result: dict) -> None:
     console.print(Panel(info_text, title="Analysis Summary", border_style="blue"))
     
     # Display matched keywords
-    matched = result.get('matched_keywords', [])
+    matched = result.get('matched_terms', result.get('matched_keywords', []))
     if matched:
         console.print(f"\n[bold]Matched Keywords ({len(matched)}):[/bold]")
         for keyword in matched:
             console.print(f"  • {keyword}", style="yellow")
     else:
         console.print("\n[green]No greenwashing keywords detected.[/green]")
+    
+    # Display negated terms
+    negated = result.get('negated_terms', [])
+    if negated:
+        console.print(f"\n[bold]Negated Terms ({len(negated)}):[/bold]")
+        console.print("[dim](These terms were found but negated, so they don't count toward the score)[/dim]")
+        for keyword in negated:
+            console.print(f"  • {keyword}", style="cyan")
     
     console.print()
 
@@ -106,7 +114,8 @@ def analyze_command(
                 "text": text,
                 "score": result['score'],
                 "risk_level": result['risk_level'],
-                "matched_keywords": result['matched_keywords'],
+                "matched_terms": result.get('matched_terms', result.get('matched_keywords', [])),
+                "negated_terms": result.get('negated_terms', []),
             }
             console.print(json.dumps(output, indent=2))
         else:
@@ -153,7 +162,8 @@ def analyze_command(
                             'score': 0,
                             'risk_level': 'Low',
                             'matched_terms': '',
-                            'matched_count': 0
+                            'matched_count': 0,
+                            'negated_terms': ''
                         })
                     else:
                         try:
@@ -165,8 +175,9 @@ def analyze_command(
                             **row,
                             'score': analysis['score'],
                             'risk_level': analysis['risk_level'],
-                            'matched_terms': ', '.join(analysis['matched_keywords']),
-                            'matched_count': len(analysis['matched_keywords'])
+                            'matched_terms': ', '.join(analysis.get('matched_terms', analysis.get('matched_keywords', []))),
+                            'matched_count': len(analysis.get('matched_terms', analysis.get('matched_keywords', []))),
+                            'negated_terms': ', '.join(analysis.get('negated_terms', []))
                         })
                 
                 # Output results
@@ -179,7 +190,8 @@ def analyze_command(
                             'score': result['score'],
                             'risk_level': result['risk_level'],
                             'matched_terms': result['matched_terms'].split(', ') if result['matched_terms'] else [],
-                            'matched_count': result['matched_count']
+                            'matched_count': result['matched_count'],
+                            'negated_terms': result['negated_terms'].split(', ') if result['negated_terms'] else []
                         })
                     console.print(json.dumps(output, indent=2))
                 else:
@@ -189,7 +201,7 @@ def analyze_command(
                         raise typer.Exit(1)
                     
                     # Get fieldnames (original + new columns)
-                    fieldnames = original_fieldnames + ['score', 'risk_level', 'matched_terms', 'matched_count']
+                    fieldnames = original_fieldnames + ['score', 'risk_level', 'matched_terms', 'matched_count', 'negated_terms']
                     
                     with open(out, 'w', encoding='utf-8', newline='') as outfile:
                         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
