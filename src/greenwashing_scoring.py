@@ -27,6 +27,9 @@ GREENWASHING_KEYWORDS: Dict[str, int] = {
 # Negation words to detect
 NEGATION_WORDS = {"not", "no", "never"}
 
+# Maximum distance (in tokens) for negation detection
+MAX_NEGATION_DISTANCE = 3
+
 def _create_phrase_pattern(phrase: str) -> re.Pattern:
     """
     Create a regex pattern for phrase matching with word boundaries.
@@ -44,23 +47,23 @@ def _create_phrase_pattern(phrase: str) -> re.Pattern:
 
 def _is_negated(text: str, match_start: int) -> bool:
     """
-    Check if a matched phrase is negated by a negation word within 3 tokens before it.
+    Check if a matched phrase is negated by a negation word within MAX_NEGATION_DISTANCE tokens before it.
     
     Args:
-        text: The full text being analyzed
+        text: The full cleaned text being analyzed (already lowercased)
         match_start: The start position of the matched phrase
     
     Returns:
         True if the phrase is negated, False otherwise
     """
-    # Get text before the match
-    before_text = text[:match_start].lower()
+    # Get text before the match (text is already lowercased from basic_clean_text)
+    before_text = text[:match_start]
     
     # Tokenize the text before the match
     tokens = before_text.split()
     
-    # Check the last 3 tokens for negation words
-    last_tokens = tokens[-3:] if len(tokens) >= 3 else tokens
+    # Check the last MAX_NEGATION_DISTANCE tokens for negation words
+    last_tokens = tokens[-MAX_NEGATION_DISTANCE:] if len(tokens) >= MAX_NEGATION_DISTANCE else tokens
     
     for token in last_tokens:
         # Remove punctuation from token for comparison
