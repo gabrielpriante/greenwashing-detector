@@ -2,7 +2,7 @@
 
 A simple, beginner-friendly Python tool for detecting potential greenwashing in marketing and product claims.
 
-> **Disclaimer**: This tool is designed to raise awareness and assist with early screening of environmental language in corporate marketing, advertising, and public communications. It is not intended to make definitive claims about greenwashing or to analyze academic research. The analysis is based on keyword matching and may flag legitimate claims or miss sophisticated greenwashing tactics. The evidence checklist provides suggested substantiation categories only and does NOT verify claims, certify compliance, or judge legality. For serious evaluation of environmental claims, please consult environmental experts and verify against recognized standards and certifications.
+> **Disclaimer**: This tool is designed to raise awareness and assist with early screening of environmental language in corporate marketing and communications. For serious evaluation of environmental claims, please consult environmental experts and verify against recognized standards.
 
 ## What is Greenwashing?
 
@@ -380,7 +380,7 @@ When environmental claims are detected in text, the tool provides a suggested **
 
 - **No claim verification**: The tool does NOT check whether claims are true, accurate, or compliant with any regulations. It only suggests what evidence categories might be relevant to substantiate a given claim.
 
-- **No legal or compliance judgment**: The checklist does not determine legality, regulatory compliance, or whether a claim constitutes greenwashing. Such determinations require expert analysis and legal review.
+- **Does not determine regulatory compliance or legal liability**: The checklist does not determine legality, regulatory compliance, or whether a claim constitutes greenwashing. Such determinations require expert analysis and legal review.
 
 - **Educational purpose**: The checklist serves to raise awareness about what kinds of evidence are typically expected for environmental claims, helping users identify what documentation they should seek or provide.
 
