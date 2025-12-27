@@ -2,6 +2,7 @@ import re
 from typing import Dict, List, Optional, Tuple
 from text_cleaning import basic_clean_text
 from config_loader import load_config, get_default_config, ConfigError
+from evidence_checklist import get_evidence_checklist
 
 # Default hardcoded keywords for backward compatibility
 GREENWASHING_KEYWORDS: Dict[str, int] = {
@@ -159,6 +160,9 @@ def simple_greenwashing_score(text: str, config_path: Optional[str] = None) -> D
     else:
         risk = "Low"
 
+    # Generate evidence checklist for matched terms
+    evidence_checklist = get_evidence_checklist(matched)
+
     return {
         "score": score,
         "risk_level": risk,
@@ -166,4 +170,5 @@ def simple_greenwashing_score(text: str, config_path: Optional[str] = None) -> D
         "negated_terms": negated,
         # Keep matched_keywords for backward compatibility
         "matched_keywords": matched,
+        "evidence_checklist": evidence_checklist,
     }

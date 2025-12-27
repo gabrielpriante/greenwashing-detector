@@ -77,6 +77,15 @@ def format_rich_report(text: str, result: dict) -> None:
         for keyword in negated:
             console.print(f"  • {keyword}", style="cyan")
     
+    # Display evidence checklist
+    evidence_checklist = result.get('evidence_checklist', {})
+    if evidence_checklist:
+        console.print(f"\n[bold]Suggested evidence to look for:[/bold]")
+        for claim, items in evidence_checklist.items():
+            console.print(f"\n[yellow]'{claim}':[/yellow]")
+            for item in items:
+                console.print(f"  • {item}", style="dim")
+    
     console.print()
 
 
@@ -131,6 +140,7 @@ def analyze_command(
                 "matched_terms": matched,
                 "matched_keywords": matched,  # Backward compatibility
                 "negated_terms": result.get('negated_terms', []),
+                "evidence_checklist": result.get('evidence_checklist', {}),
             }
             console.print(json.dumps(output, indent=2))
         else:
@@ -180,7 +190,8 @@ def analyze_command(
                             'matched_terms': matched_str,
                             'matched_keywords': matched_str,  # Backward compatibility
                             'matched_count': 0,
-                            'negated_terms': ''
+                            'negated_terms': '',
+                            'evidence_checklist': ''
                         })
                     else:
                         try:
@@ -189,6 +200,9 @@ def analyze_command(
                             console.print(f"[red]Error processing row: {e}[/red]")
                             raise typer.Exit(1)
                         matched_str = ', '.join(get_matched_terms(analysis))
+                        # Format evidence checklist for CSV
+                        evidence_dict = analysis.get('evidence_checklist', {})
+                        evidence_str = json.dumps(evidence_dict) if evidence_dict else ''
                         results.append({
                             **row,
                             'score': analysis['score'],
@@ -196,7 +210,8 @@ def analyze_command(
                             'matched_terms': matched_str,
                             'matched_keywords': matched_str,  # Backward compatibility
                             'matched_count': len(get_matched_terms(analysis)),
-                            'negated_terms': ', '.join(analysis.get('negated_terms', []))
+                            'negated_terms': ', '.join(analysis.get('negated_terms', [])),
+                            'evidence_checklist': evidence_str
                         })
                 
                 # Output results
@@ -205,6 +220,7 @@ def analyze_command(
                     output = []
                     for result in results:
                         matched_list = result['matched_terms'].split(', ') if result['matched_terms'] else []
+                        evidence_dict = json.loads(result['evidence_checklist']) if result['evidence_checklist'] else {}
                         output.append({
                             text_col: result[text_col],
                             'score': result['score'],
@@ -212,7 +228,8 @@ def analyze_command(
                             'matched_terms': matched_list,
                             'matched_keywords': matched_list,  # Backward compatibility
                             'matched_count': result['matched_count'],
-                            'negated_terms': result['negated_terms'].split(', ') if result['negated_terms'] else []
+                            'negated_terms': result['negated_terms'].split(', ') if result['negated_terms'] else [],
+                            'evidence_checklist': evidence_dict
                         })
                     console.print(json.dumps(output, indent=2))
                 else:
@@ -222,7 +239,7 @@ def analyze_command(
                         raise typer.Exit(1)
                     
                     # Get fieldnames (original + new columns)
-                    fieldnames = original_fieldnames + ['score', 'risk_level', 'matched_terms', 'matched_keywords', 'matched_count', 'negated_terms']
+                    fieldnames = original_fieldnames + ['score', 'risk_level', 'matched_terms', 'matched_keywords', 'matched_count', 'negated_terms', 'evidence_checklist']
                     
                     with open(out, 'w', encoding='utf-8', newline='') as outfile:
                         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
