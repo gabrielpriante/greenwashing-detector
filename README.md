@@ -2,7 +2,7 @@
 
 A simple, beginner-friendly Python tool for detecting potential greenwashing in marketing and product claims.
 
-> **Disclaimer**: This tool is designed to raise awareness and assist with early screening of environmental language in corporate marketing, advertising, and public communications. It is not intended to make definitive claims about greenwashing or to analyze academic research. The analysis is based on keyword matching and may flag legitimate claims or miss sophisticated greenwashing tactics. For serious evaluation of environmental claims, please consult environmental experts and verify against recognized standards and certifications.
+> **Disclaimer**: This tool is designed to raise awareness and assist with early screening of environmental language in corporate marketing, advertising, and public communications. It is not intended to make definitive claims about greenwashing or to analyze academic research. The analysis is based on keyword matching and may flag legitimate claims or miss sophisticated greenwashing tactics. The evidence checklist provides suggested substantiation categories only and does NOT verify claims, certify compliance, or judge legality. For serious evaluation of environmental claims, please consult environmental experts and verify against recognized standards and certifications.
 
 ## What is Greenwashing?
 
@@ -176,6 +176,12 @@ print(analyze_text(text))
 - Normalized scores to account for text length
 - Risk level categorization (Low/Medium/High)
 - Detailed reporting of matched keywords
+
+### Evidence Checklist (Guidance Only)
+- Suggests common substantiation categories for detected environmental claims
+- Educational reference for typical documentation expectations
+- Does NOT verify claims, certify compliance, or judge legality
+- Assists with transparency and awareness of claim substantiation needs
 
 ### Jupyter Notebook
 - Interactive text analysis
@@ -363,6 +369,24 @@ This tool is most relevant for **exploratory analysis of corporate sustainabilit
 - Analyzing peer-reviewed scientific literature
 
 The tool serves as a **starting point for awareness and discussion**, helping to identify language patterns that may warrant further investigation by qualified experts.
+
+## Evidence Checklist Scope & Limitations
+
+When environmental claims are detected in text, the tool provides a suggested **evidence checklist** that lists common substantiation categories for those claims. This checklist is intended as an **assistive screening and transparency tool** to help users understand what types of documentation are typically expected for specific environmental claims.
+
+**Important clarifications:**
+
+- **Guidance only**: The evidence checklist provides suggested categories of substantiation that are commonly expected for specific environmental claims. It does not verify, validate, or certify anything.
+
+- **No claim verification**: The tool does NOT check whether claims are true, accurate, or compliant with any regulations. It only suggests what evidence categories might be relevant to substantiate a given claim.
+
+- **No legal or compliance judgment**: The checklist does not determine legality, regulatory compliance, or whether a claim constitutes greenwashing. Such determinations require expert analysis and legal review.
+
+- **Educational purpose**: The checklist serves to raise awareness about what kinds of evidence are typically expected for environmental claims, helping users identify what documentation they should seek or provide.
+
+- **Not a substitute for experts**: Always consult qualified environmental consultants, certification bodies, legal advisors, and regulatory authorities for actual claim verification and compliance assessment.
+
+The evidence checklist is part of the tool's transparency mission—helping users understand the rigor expected behind environmental claims without providing any verification itself.
 
 ## Next Steps / Improvements
 
