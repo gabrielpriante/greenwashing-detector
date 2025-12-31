@@ -1,0 +1,16 @@
+metric,value,notes
+Total Records,20,Total number of analyzed items
+Total Amount,"20,300,000.00",Sum of all amounts
+Average Amount,"1,015,000.00",Mean amount per record
+Year Range,2021-2023,From 2021 to 2023
+Unique Issuers,12,Number of distinct issuers
+Top 5 Country Concentration,100.0%,"Very High - USA, UK, China"
+Country HHI,3609.35,Highly concentrated
+Top 5 Issuer Concentration,65.0%,"High - GreenCorp, NaturalCo, BioDev"
+Issuer HHI,2710.78,Highly concentrated
+Top 5 Year Concentration,100.0%,"Very High - 2022, 2023, 2021"
+Year HHI,3369.31,Highly concentrated
+Top Country,USA,8 records (55.67%)
+Top Risk_Level,Medium,12 records (42.86%)
+Top Category,Fashion,4 records (20.44%)
+Data Quality,See coverage report,Missing data in key fields: 0 fields >20%

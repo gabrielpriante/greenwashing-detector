@@ -189,6 +189,14 @@ print(analyze_text(text))
 - Visualizations of results
 - Educational content about greenwashing
 
+### Portfolio Analytics
+- Aggregate analysis of CSV datasets with greenwashing detection results
+- Overview statistics (totals, year ranges, unique entities)
+- Concentration metrics (Top-N, Herfindahl-Hirschman Index)
+- Data coverage and quality reports
+- Export-ready summary tables
+- Command-line tool for batch portfolio analysis
+
 ## Keyword Categories
 
 The detector looks for two types of problematic terms:
@@ -315,6 +323,135 @@ For a complete guide, see [INDUSTRY_TERMS.md](INDUSTRY_TERMS.md) or run:
 python src/industry_terms.py
 python examples/industry_terms_examples.py
 ```
+
+## Portfolio Analytics
+
+The portfolio analytics module enables batch analysis of greenwashing detection results, providing aggregate metrics and insights for large datasets.
+
+### What is Portfolio Analytics?
+
+Portfolio analytics treats a collection of analyzed texts (e.g., product claims, marketing materials, sustainability reports) as a portfolio and computes summary statistics, concentration metrics, and data quality reports.
+
+### Features
+
+- **Overview Statistics**: Total records, amounts, year ranges, unique entities
+- **Aggregation**: Group by country, year, category, or any dimension
+- **Concentration Analysis**: Identify how distributed or concentrated your data is
+- **Data Quality**: Coverage reports showing completeness of fields
+- **Export-Ready Reports**: CSV files suitable for presentations or further analysis
+
+### Command-Line Usage
+
+Generate a portfolio summary from a CSV file:
+
+```bash
+greenwash summary data/processed/sample_analysis.csv
+```
+
+Specify a custom output directory:
+
+```bash
+greenwash summary results.csv --output-dir reports/
+```
+
+### Input Format
+
+The CSV file should contain greenwashing analysis results with columns like:
+- `text`: The analyzed text
+- `score`: Greenwashing score
+- `risk_level`: Risk level (Low/Medium/High)
+- Optional: `country`, `year`, `amount`, `issuer`, `category`, etc.
+
+Example CSV structure:
+```csv
+text,score,risk_level,country,year,amount,issuer
+"Eco-friendly product",40,Medium,USA,2021,1000000,GreenCorp
+"100% natural",30,Medium,UK,2022,500000,NaturalCo
+```
+
+### Output Files
+
+The summary command generates two CSV reports in the `outputs/` directory:
+
+1. **portfolio_summary.csv**: Key metrics including totals, concentration analysis, and top categories
+2. **data_coverage_report.csv**: Field-by-field data completeness analysis
+
+### Example Output
+
+```
+Portfolio Overview
+============================================================
+Total Records: 20
+Total Amount: 20,300,000.00
+Average Amount: 1,015,000.00
+Year Range: 2021-2023
+Unique Issuers: 12
+
+Data Completeness:
+  ✓ country: 100.0% complete
+  ✓ year: 100.0% complete
+  ✓ amount: 100.0% complete
+
+Key Metrics:
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric                      ┃ Value         ┃ Notes                    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Total Records               │ 20            │ Total analyzed items     │
+│ Top 5 Country Concentration │ 100.0%        │ Very High - USA, UK, CN  │
+│ Country HHI                 │ 3609.35       │ Highly concentrated      │
+└─────────────────────────────┴───────────────┴──────────────────────────┘
+```
+
+### Using Analytics in Python
+
+You can also use the analytics module programmatically:
+
+```python
+import pandas as pd
+from src.analytics.metrics import (
+    issuance_overview,
+    aggregation_by_country,
+    portfolio_summary_table,
+    data_coverage_report
+)
+
+# Load your data
+df = pd.read_csv('results.csv')
+
+# Get overview statistics
+overview = issuance_overview(df)
+print(f"Total records: {overview['total_records']}")
+print(f"Year range: {overview['year_range']}")
+
+# Aggregate by country
+country_stats = aggregation_by_country(df)
+print(country_stats.head())
+
+# Generate comprehensive summary
+summary = portfolio_summary_table(df)
+summary.to_csv('portfolio_summary.csv', index=False)
+
+# Check data coverage
+coverage = data_coverage_report(df, threshold=80.0)
+print(coverage)
+```
+
+### Documentation
+
+For detailed explanations of each metric, interpretations, and limitations, see:
+- [Portfolio Metrics Documentation](docs/analytics/portfolio_metrics.md)
+
+### Limitations
+
+Portfolio analytics metrics are **descriptive tools** for understanding data characteristics. Important limitations:
+
+- **Reporting bias**: Reflects what is reported, not necessarily reality
+- **Coverage bias**: Missing data may not be random
+- **No validation**: Does not verify data accuracy or quality
+- **Educational purpose**: Not suitable for investment advice or legal determinations
+- **Currency/units**: Assumes consistent units; no conversion performed
+
+Always review the data coverage report first and interpret metrics in context.
 
 ## Example Output
 

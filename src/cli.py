@@ -16,6 +16,8 @@ try:
     import typer
     from rich.console import Console
     from rich.panel import Panel
+    from rich.table import Table
+    import pandas as pd
 except ImportError:
     print("Error: Required packages not installed. Please run: pip install -r requirements.txt")
     sys.exit(1)
@@ -27,6 +29,20 @@ if str(src_dir) not in sys.path:
 
 # Import greenwashing scoring functions
 from greenwashing_scoring import simple_greenwashing_score
+
+# Import analytics functions
+try:
+    from analytics.metrics import (
+        issuance_overview,
+        aggregation_by_country,
+        aggregation_by_year,
+        aggregation_by_category,
+        data_coverage_report,
+        portfolio_summary_table,
+    )
+except ImportError:
+    # Analytics module not available
+    pass
 
 app = typer.Typer(
     help="Greenwashing Detector CLI - Analyze text for potential greenwashing",
@@ -267,6 +283,136 @@ def analyze_command(
 def version_command():
     """Show version information."""
     console.print("greenwashing-detector version 0.1.0")
+
+
+@app.command(name="summary")
+def summary_command(
+    file: Path = typer.Argument(..., help="CSV file to analyze"),
+    output_dir: Optional[Path] = typer.Option(None, "--output-dir", "-o", help="Output directory for reports (default: ./outputs)"),
+):
+    """
+    Generate portfolio-level analytics summary from CSV data.
+    
+    This command analyzes a CSV file containing greenwashing detection results
+    and generates comprehensive portfolio metrics including:
+    - Overview statistics (total records, year ranges, etc.)
+    - Concentration analysis by country, year, and other dimensions
+    - Data coverage report showing completeness of fields
+    
+    Examples:
+    
+      greenwash summary data/processed/green_bonds.csv
+      
+      greenwash summary results.csv --output-dir reports/
+    """
+    # Check if analytics module is available
+    try:
+        from analytics.metrics import (
+            issuance_overview,
+            data_coverage_report,
+            portfolio_summary_table,
+        )
+    except ImportError:
+        console.print("[red]Error: Analytics module not available[/red]")
+        raise typer.Exit(1)
+    
+    # Validate input file
+    if not file.exists():
+        console.print(f"[red]Error: File not found: {file}[/red]")
+        raise typer.Exit(1)
+    
+    # Set output directory
+    if output_dir is None:
+        output_dir = Path("./outputs")
+    
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    try:
+        # Load CSV file
+        console.print(f"[blue]Loading data from {file}...[/blue]")
+        df = pd.read_csv(file)
+        
+        if len(df) == 0:
+            console.print("[yellow]Warning: CSV file is empty[/yellow]")
+            raise typer.Exit(1)
+        
+        console.print(f"[green]✓ Loaded {len(df)} records[/green]\n")
+        
+        # Generate overview
+        console.print("[bold blue]Portfolio Overview[/bold blue]")
+        console.print("=" * 60)
+        
+        overview = issuance_overview(df)
+        
+        # Display overview in console
+        console.print(f"Total Records: {overview['total_records']}")
+        
+        if 'total_amount' in overview:
+            console.print(f"Total Amount: {overview['total_amount']:,.2f}")
+            console.print(f"Average Amount: {overview['avg_amount']:,.2f}")
+        
+        if 'year_range' in overview:
+            console.print(f"Year Range: {overview['year_range']}")
+        
+        if 'unique_issuers' in overview:
+            console.print(f"Unique Issuers: {overview['unique_issuers']}")
+        
+        # Missing data
+        if overview.get('missing_data_pct'):
+            console.print("\n[bold]Data Completeness:[/bold]")
+            for field, pct in overview['missing_data_pct'].items():
+                status = "[green]✓[/green]" if pct < 20 else "[yellow]⚠[/yellow]" if pct < 50 else "[red]✗[/red]"
+                console.print(f"  {status} {field}: {100-pct:.1f}% complete")
+        
+        console.print()
+        
+        # Generate portfolio summary table
+        console.print("[bold blue]Generating Portfolio Summary...[/bold blue]")
+        summary_table = portfolio_summary_table(df)
+        summary_output = output_dir / "portfolio_summary.csv"
+        summary_table.to_csv(summary_output, index=False)
+        console.print(f"[green]✓ Portfolio summary saved to: {summary_output}[/green]")
+        
+        # Display summary table in console
+        if len(summary_table) > 0:
+            console.print("\n[bold]Key Metrics:[/bold]")
+            table = Table(show_header=True, header_style="bold cyan")
+            table.add_column("Metric", style="dim")
+            table.add_column("Value", style="magenta")
+            table.add_column("Notes", style="dim")
+            
+            for _, row in summary_table.head(10).iterrows():
+                table.add_row(str(row['metric']), str(row['value']), str(row['notes']))
+            
+            console.print(table)
+        
+        # Generate data coverage report
+        console.print("\n[bold blue]Generating Data Coverage Report...[/bold blue]")
+        coverage = data_coverage_report(df, threshold=80.0)
+        coverage_output = output_dir / "data_coverage_report.csv"
+        coverage.to_csv(coverage_output, index=False)
+        console.print(f"[green]✓ Coverage report saved to: {coverage_output}[/green]")
+        
+        # Display critical coverage issues
+        low_coverage = coverage[coverage['below_threshold'] == True]
+        if len(low_coverage) > 0:
+            console.print("\n[yellow]⚠ Fields with <80% coverage:[/yellow]")
+            for _, row in low_coverage.iterrows():
+                console.print(f"  • {row['column_name']}: {row['non_null_pct']:.1f}%")
+        else:
+            console.print("\n[green]✓ All fields have ≥80% coverage[/green]")
+        
+        console.print(f"\n[bold green]Summary complete![/bold green]")
+        console.print(f"Reports saved to: {output_dir.absolute()}")
+        
+    except pd.errors.EmptyDataError:
+        console.print("[red]Error: CSV file is empty or invalid[/red]")
+        raise typer.Exit(1)
+    except Exception as e:
+        console.print(f"[red]Error processing file: {e}[/red]")
+        import traceback
+        console.print(traceback.format_exc())
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":

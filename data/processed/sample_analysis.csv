@@ -1,0 +1,21 @@
+text,score,risk_level,country,year,amount,issuer,category
+"Our eco-friendly product is sustainable",40,Medium,USA,2021,1000000,GreenCorp,Food
+"100% natural ingredients",30,Medium,UK,2021,500000,NaturalCo,Beauty
+"Carbon neutral manufacturing process",50,High,USA,2022,1500000,GreenCorp,Fashion
+"Organic and chemical-free",45,High,China,2022,800000,EcoProducts,Food
+"Sustainable packaging",35,Medium,Germany,2023,600000,PackagingPlus,Home
+"All natural product",30,Medium,USA,2023,700000,GreenCorp,Food
+"Eco-friendly materials",40,Medium,UK,2022,900000,NaturalCo,Fashion
+"Zero emissions facility",55,High,USA,2023,2000000,GreenCorp,Electronics
+"Biodegradable components",50,High,France,2022,1200000,BioDev,Electronics
+"Renewable energy powered",45,High,USA,2021,1100000,GreenCorp,Electronics
+"Sustainably sourced materials",40,Medium,UK,2023,850000,EcoMaterials,Fashion
+"Green certified facility",35,Medium,Germany,2021,750000,CertifiedGreen,Home
+"Natural and organic",35,Medium,China,2022,650000,OrganicChoice,Beauty
+"Climate neutral",50,High,USA,2023,1800000,GreenCorp,Automotive
+"Recyclable packaging",30,Medium,France,2021,550000,RecyclePlus,Home
+"Chemical-free formula",40,Medium,UK,2022,700000,NaturalCo,Beauty
+"Sustainable agriculture",45,High,USA,2022,1300000,FarmFresh,Food
+"Eco-conscious design",35,Medium,Germany,2023,900000,DesignCo,Fashion
+"Zero waste production",55,High,USA,2021,1900000,GreenCorp,Electronics
+"Environmentally friendly",30,Medium,China,2023,600000,EcoFriendly,Home

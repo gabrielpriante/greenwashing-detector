@@ -201,5 +201,94 @@ class TestCLIBackwardCompatibility(unittest.TestCase):
         self.assertEqual(row['matched_terms'], 'eco friendly')
 
 
+class TestCLISummaryCommand(unittest.TestCase):
+    """Test the CLI summary command."""
+    
+    def setUp(self):
+        """Create temporary files for testing."""
+        import pandas as pd
+        
+        # Create a temporary CSV file with test data
+        self.test_df = pd.DataFrame({
+            'text': ['eco-friendly', 'sustainable', 'natural'],
+            'score': [10, 20, 15],
+            'risk_level': ['Low', 'Medium', 'Low'],
+            'country': ['USA', 'UK', 'USA'],
+            'year': [2021, 2022, 2023],
+            'amount': [1000, 2000, 1500],
+            'issuer': ['CompanyA', 'CompanyB', 'CompanyA'],
+        })
+        
+        self.temp_dir = tempfile.mkdtemp()
+        self.test_file = Path(self.temp_dir) / 'test_data.csv'
+        self.output_dir = Path(self.temp_dir) / 'outputs'
+        
+        self.test_df.to_csv(self.test_file, index=False)
+    
+    def tearDown(self):
+        """Clean up temporary files."""
+        import shutil
+        if Path(self.temp_dir).exists():
+            shutil.rmtree(self.temp_dir)
+    
+    def test_summary_generates_reports(self):
+        """Test that summary command generates required CSV reports."""
+        try:
+            from analytics.metrics import (
+                issuance_overview,
+                data_coverage_report,
+                portfolio_summary_table,
+            )
+        except ImportError:
+            self.skipTest("Analytics module not available")
+        
+        import pandas as pd
+        
+        # Load test data
+        df = pd.read_csv(self.test_file)
+        
+        # Generate reports
+        summary = portfolio_summary_table(df)
+        coverage = data_coverage_report(df)
+        
+        # Verify reports have content
+        self.assertGreater(len(summary), 0)
+        self.assertGreater(len(coverage), 0)
+        
+        # Verify required columns
+        self.assertIn('metric', summary.columns)
+        self.assertIn('value', summary.columns)
+        self.assertIn('notes', summary.columns)
+        
+        self.assertIn('column_name', coverage.columns)
+        self.assertIn('non_null_pct', coverage.columns)
+    
+    def test_summary_handles_minimal_csv(self):
+        """Test that summary command handles CSV with minimal columns."""
+        try:
+            from analytics.metrics import portfolio_summary_table
+        except ImportError:
+            self.skipTest("Analytics module not available")
+        
+        import pandas as pd
+        
+        # Create minimal CSV
+        minimal_df = pd.DataFrame({
+            'text': ['a', 'b', 'c'],
+            'score': [10, 20, 30],
+        })
+        
+        minimal_file = Path(self.temp_dir) / 'minimal.csv'
+        minimal_df.to_csv(minimal_file, index=False)
+        
+        # Load and process
+        df = pd.read_csv(minimal_file)
+        
+        # Should not raise an error
+        summary = portfolio_summary_table(df)
+        self.assertIsInstance(summary, pd.DataFrame)
+        self.assertGreater(len(summary), 0)
+
+
 if __name__ == '__main__':
     unittest.main()

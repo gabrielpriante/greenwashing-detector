@@ -1,0 +1,9 @@
+column_name,non_null_count,non_null_pct,below_threshold,notes
+text,20,100.0,False,Complete coverage
+score,20,100.0,False,Complete coverage
+risk_level,20,100.0,False,Complete coverage
+country,20,100.0,False,Complete coverage
+year,20,100.0,False,Complete coverage
+amount,20,100.0,False,Complete coverage
+issuer,20,100.0,False,Complete coverage
+category,20,100.0,False,Complete coverage
