@@ -39,7 +39,7 @@ def issuance_overview(df: pd.DataFrame) -> Dict[str, Any]:
     # Total amount if available
     if 'amount' in df.columns:
         overview['total_amount'] = df['amount'].sum()
-        overview['avg_amount'] = df['amount'].mean()
+        overview['avg_amount'] = df['amount'].mean(skipna=True)
     
     # Year range if available
     if 'year' in df.columns:
@@ -145,7 +145,8 @@ def aggregation_by_year(df: pd.DataFrame) -> pd.DataFrame:
     
     # Drop NA values and convert to int
     df_valid = df[df['year'].notna()].copy()
-    df_valid['year'] = df_valid['year'].astype(int)
+    # Use Int64 for nullable integers to handle float inputs like 2021.0
+    df_valid['year'] = pd.to_numeric(df_valid['year'], errors='coerce').astype('Int64')
     
     # Group by year
     if 'amount' in df.columns:

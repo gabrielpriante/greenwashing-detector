@@ -394,7 +394,7 @@ def summary_command(
         console.print(f"[green]✓ Coverage report saved to: {coverage_output}[/green]")
         
         # Display critical coverage issues
-        low_coverage = coverage[coverage['below_threshold'] == True]
+        low_coverage = coverage[coverage['below_threshold']]
         if len(low_coverage) > 0:
             console.print("\n[yellow]⚠ Fields with <80% coverage:[/yellow]")
             for _, row in low_coverage.iterrows():
