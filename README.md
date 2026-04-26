@@ -444,3 +444,4 @@ To learn more about greenwashing:
 - [FTC Green Guides](https://www.ftc.gov/news-events/topics/truth-advertising/green-guides)
 - [Greenwashing Index](http://www.greenwashingindex.com/)
 - [TerraChoice Seven Sins of Greenwashing](https://www.ul.com/insights/sins-greenwashing)
+**Author:** [Gabriel Penedo](https://gabrielpriante.github.io)
